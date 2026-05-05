@@ -12,14 +12,14 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import QThread, pyqtSignal
 
-# ---------------- CONFIG ---------------- #
+# CONFIG 
 LOG_FILE = "sample_log.txt"
 FAILED_THRESHOLD = 5
 
 SUSPICIOUS_KEYWORDS = ["urgent", "verify", "login", "password", "bank", "account"]
 SHORTENERS = ["bit.ly", "tinyurl.com"]
 
-# ---------------- DATABASE ---------------- #
+# DATABASE 
 def init_db():
     conn = sqlite3.connect("soc.db")
     c = conn.cursor()
@@ -54,7 +54,7 @@ def fetch_alerts():
     conn.close()
     return rows
 
-# ---------------- SIEM DETECTION ---------------- #
+#  SIEM DETECTION 
 FAILED_PATTERN = re.compile(r"Failed password for .* from (\d+\.\d+\.\d+\.\d+)")
 
 def analyze_logs():
@@ -83,7 +83,7 @@ def analyze_logs():
 
     return alerts
 
-# ---------------- THREAD ---------------- #
+# THREAD 
 class MonitorThread(QThread):
     alert_signal = pyqtSignal(dict)
 
@@ -99,7 +99,7 @@ class MonitorThread(QThread):
                     self.alert_signal.emit(alert)
             time.sleep(5)
 
-# ---------------- PHISHING ---------------- #
+# PHISHING 
 def extract_urls(text):
     return re.findall(r'(https?://[^\s]+)', text)
 
@@ -146,7 +146,7 @@ def risk(score):
     else:
         return "🟢 LOW", "#4dff88"
 
-# ---------------- GUI ---------------- #
+# GUI 
 class App(QWidget):
     def __init__(self):
         super().__init__()
@@ -254,7 +254,7 @@ class App(QWidget):
         QTextEdit { background:#020617; border-radius:6px; }
         """
 
-# ---------------- RUN ---------------- #
+# RUN 
 if __name__ == "__main__":
     init_db()
     app = QApplication(sys.argv)
